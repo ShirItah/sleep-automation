@@ -80,7 +80,7 @@ SNORE_NAME_TAGS = ("SnoreBodyPositionTimeline.xml", [".//{*}SiTime", "//{*}SiVal
 XML_REG_FILE_NAMES_AND_TAGS = [HR_NAME_TAGS, PATAMP_NAME_TAGS, SAT_NAME_TAGS, SNORE_NAME_TAGS]
 
 # directory of the WPI output & unzip function outputs
-ROOTDIR = 'C:\\Users\\ishir\\Desktop\\WPI_night_studies_auto_tool\\results'
+ROOTDIR = '.\\WPI_night_studies_auto_tool\\results'
 
 # the ending of the zip file containing all the xmls
 STUDY_ZIP_ENDING = '\\study.zip'
