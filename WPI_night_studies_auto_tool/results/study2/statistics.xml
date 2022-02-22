@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE root>
+<study>
+  <patient>
+    <ID>Tab8</ID>
+    <UniquePatientIdentification>0</UniquePatientIdentification>
+    <FirstName></FirstName>
+    <LastName></LastName>
+    <Sex>N/A</Sex>
+    <BirthDay format="M/d/yyyy"></BirthDay>
+    <Weight units="Kg">0</Weight>
+    <Height units="cm">0</Height>
+    <NeckSize units="cm">0</NeckSize>
+    <EpworthScore>-1</EpworthScore>
+    <HomePhone></HomePhone>
+    <WorkPhone></WorkPhone>
+    <MobilePhone></MobilePhone>
+    <Pager></Pager>
+    <Email></Email>
+    <Street></Street>
+    <City></City>
+    <ZipCode></ZipCode>
+    <State></State>
+    <Country></Country>
+    <HistoryDisease></HistoryDisease>
+    <Medication></Medication>
+    <Pacemaker>no</Pacemaker>
+  </patient>
+  <physician>
+    <PhysicianFirstName>N/A</PhysicianFirstName>
+    <PhysicianLastName>N/A</PhysicianLastName>
+    <PhysicianFaxPhone></PhysicianFaxPhone>
+    <PhysicianWorkPhone></PhysicianWorkPhone>
+    <PhysicianMobilePhone></PhysicianMobilePhone>
+    <PhysicianPager></PhysicianPager>
+    <PhysicianEmail></PhysicianEmail>
+    <PhysicianStreet></PhysicianStreet>
+    <PhysicianCity></PhysicianCity>
+    <PhysicianZipCode></PhysicianZipCode>
+    <PhysicianState></PhysicianState>
+    <PhysicianCountry></PhysicianCountry>
+    <PhysicianAffiliation></PhysicianAffiliation>
+    <PhysicianLicense>N/A</PhysicianLicense>
+  </physician>
+  <Comments></Comments>
+  <Coverage></Coverage>
+  <PaymentCode></PaymentCode>
+  <NumberOfNights>1</NumberOfNights>
+  <BraceletStudy>no</BraceletStudy>
+  <BraceletID></BraceletID>
+  <StudyDate format="MM/DD/YYYY hh:mm:ss">12/03/2021 22:06:33</StudyDate>
+  <HardwareVersion>4.2.1023</HardwareVersion>
+  <SoftwareVersion>5.2.80.4</SoftwareVersion>
+  <DeviceSN>116123</DeviceSN>
+  <BraceletSN></BraceletSN>
+  <analysis>
+    <StudyStatus>0x20</StudyStatus>
+    <Warnings></Warnings>
+    <BraceletMessage></BraceletMessage>
+    <StudyStartTime units="secs">79593</StudyStartTime>
+    <StudyEndTime units="secs">25716</StudyEndTime>
+    <TotalApneaSleepTime units="secs">24500</TotalApneaSleepTime>
+    <TotalWakeTime units="secs">4080</TotalWakeTime>
+    <TotalSleepTime units="secs">28443</TotalSleepTime>
+    <TotalArousalSleepTime units="secs">28420</TotalArousalSleepTime>
+    <NumberOfWakes>13</NumberOfWakes>
+    <TotalREMTime units="secs">6542</TotalREMTime>
+    <TotalDeepSleepTime units="secs">3031</TotalDeepSleepTime>
+    <TotalLightSleepTime units="secs">18870</TotalLightSleepTime>
+    <RDI>17.93</RDI>
+    <AHI>16.75</AHI>
+    <ODI>7.20</ODI>
+    <REM_RDI>28.43</REM_RDI>
+    <REM_AHI>28.43</REM_AHI>
+    <REM_ODI>19.90</REM_ODI>
+    <NREM_RDI>16.00</NREM_RDI>
+    <NREM_AHI>14.61</NREM_AHI>
+    <NREM_ODI>4.87</NREM_ODI>
+    <TotalNumberOfApneas>122</TotalNumberOfApneas>
+    <NumberOfMixedApneas>114</NumberOfMixedApneas>
+    <NumberOfDesaturations>49</NumberOfDesaturations>
+    <REMLatency units="secs">3270.00</REMLatency>
+    <SleepLatency units="secs">1140</SleepLatency>
+    <SnoreThreshold units="db">0</SnoreThreshold>
+    <MeanSnoreDB units="db">N/A</MeanSnoreDB>
+    <SleepOverThreshold units="secs">N/A</SleepOverThreshold>
+    <SnoreAbove40 units="secs">N/A</SnoreAbove40>
+    <SnoreAbove50 units="secs">N/A</SnoreAbove50>
+    <SnoreAbove60 units="secs">N/A</SnoreAbove60>
+    <SnoreAbove70 units="secs">N/A</SnoreAbove70>
+    <SnoreAbove80 units="secs">N/A</SnoreAbove80>
+    <SleepDuringProne units="secs">N/A</SleepDuringProne>
+    <SleepDuringSupine units="secs">N/A</SleepDuringSupine>
+    <SleepDuringLeft units="secs">N/A</SleepDuringLeft>
+    <SleepDuringRight units="secs">N/A</SleepDuringRight>
+    <SleepDuringNonSupine units="secs">N/A</SleepDuringNonSupine>
+    <Prone_RDI>N/A</Prone_RDI>
+    <Prone_AHI>N/A</Prone_AHI>
+    <Prone_ODI>N/A</Prone_ODI>
+    <Supine_RDI>N/A</Supine_RDI>
+    <Supine_AHI>N/A</Supine_AHI>
+    <Supine_ODI>N/A</Supine_ODI>
+    <Left_RDI>N/A</Left_RDI>
+    <Left_AHI>N/A</Left_AHI>
+    <Left_ODI>N/A</Left_ODI>
+    <Right_RDI>N/A</Right_RDI>
+    <Right_AHI>N/A</Right_AHI>
+    <Right_ODI>N/A</Right_ODI>
+    <NonSupine_RDI>N/A</NonSupine_RDI>
+    <NonSupine_AHI>N/A</NonSupine_AHI>
+    <NonSupine_ODI>N/A</NonSupine_ODI>
+    <MeanPRSleep>70</MeanPRSleep>
+    <MinPRSleep>36</MinPRSleep>
+    <MaxPRSleep>102</MaxPRSleep>
+    <MeanSatValue>93</MeanSatValue>
+    <MinSatValue>82</MinSatValue>
+    <MaxSatValue>99</MaxSatValue>
+    <MeanNadirDesaturations>89.41</MeanNadirDesaturations>
+    <SatBelow90 units="secs">228</SatBelow90>
+    <SatBelowEqual88 units="secs">131</SatBelowEqual88>
+    <SatBelow88 units="secs">N/A</SatBelow88>
+    <SatBelow85 units="secs">37</SatBelow85>
+    <SatBelow80 units="secs">0</SatBelow80>
+    <SatBelow70 units="secs">0</SatBelow70>
+    <Desats2_3 units="secs">66</Desats2_3>
+    <Desats4_9 units="secs">43</Desats4_9>
+    <Desats10_9 units="secs">6</Desats10_9>
+    <DesatsAbove20 units="secs">0</DesatsAbove20>
+    <NumberOfMixedApneas_4_Percent>53</NumberOfMixedApneas_4_Percent>
+    <AHI_4_Percent>7.79</AHI_4_Percent>
+    <SnoreBPChart_Y_axis>Supine,Right,Left,Prone,Sit</SnoreBPChart_Y_axis>
+    <SnoreDb_Y_axis>50,60,70,80</SnoreDb_Y_axis>
+    <StagesChart_Y_axis>D Sleep,L Sleep,REM,Wake</StagesChart_Y_axis>
+  </analysis>
+</study>
