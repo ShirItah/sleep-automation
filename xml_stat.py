@@ -8,10 +8,11 @@ NO_SBP_STUDY = "W/O SBP"
 NO_SBP_PARAM_EXAMPLE = 'AHICentral'
 
 class XML_STAT(XML_READ):
-    def __init__(self, zip_folder, xml_tags, sbp_tags, sbp_tags_time):
+    def __init__(self, zip_folder, xml_tags, sbp_tags, sbp_tags_time, no_sbp_tags_time):
         super().__init__(zip_folder, xml_tags)
         self.sbp_tags = sbp_tags
         self.sbp_tags_time = sbp_tags_time
+        self.no_sbp_tags_time = no_sbp_tags_time
 
     def parse_xml(self):
         """
@@ -41,8 +42,13 @@ class XML_STAT(XML_READ):
                 self.results_dict[param_sbp] = NO_SBP_STUDY             # changing N/A to "NO_SBP_STUDY"
         else:
             # convert the values in sbp_tags_time (representing time) from sec to hr,min,sec
-            sec_param_dict = dict((k, self.results_dict[k]) for k in self.sbp_tags_time)
-            sec_params = list(sec_param_dict.values())
-            for param_time_sbp, sec_param in itertools.zip_longest(self.sbp_tags_time, sec_params):
-                self.results_dict[param_time_sbp] = str(datetime.timedelta(seconds=int(sec_param)))
+            sec_param_dict_sbp = dict((k, self.results_dict[k]) for k in self.sbp_tags_time)
+            sec_params_sbp = list(sec_param_dict_sbp.values())
+            for param_time, sec_param in itertools.zip_longest(self.sbp_tags_time, sec_params_sbp):
+                self.results_dict[param_time] = str(datetime.timedelta(seconds=int(sec_param)))
+        # convert the values in no_sbp_tags_time (representing time) from sec to hr,min,sec
+        sec_param_dict_no_sbp = dict((k, self.results_dict[k]) for k in self.no_sbp_tags_time)
+        sec_params_no_sbp = list(sec_param_dict_no_sbp.values())
+        for param_time, sec_param in itertools.zip_longest(self.no_sbp_tags_time, sec_params_no_sbp):
+            self.results_dict[param_time] = str(datetime.timedelta(seconds=int(sec_param)))
         return self.results_dict

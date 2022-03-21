@@ -19,9 +19,17 @@ import csv
 
 ## Parameters lists in statistics.xml - "analysis" tag
 # Params list exists in all the studies
-ANALYSIS_PARAMS = ["RDI", "AHI", "ODI", "REM_RDI", "REM_AHI", "REM_ODI", "NREM_RDI", "NREM_AHI", "NREM_ODI",
+# numeric parameters
+ANALYSIS_PARAMS_NUM_NO_SBP = ["RDI", "AHI", "ODI", "REM_RDI", "REM_AHI", "REM_ODI", "NREM_RDI", "NREM_AHI", "NREM_ODI",
                    "TotalNumberOfApneas", "AHICentral", "CSR_Percent", "REM_AHICentral", "NREM_AHICentral",
                    "NumberOfCentralAH", "SatBelowEqual88", "SatBelow88"]
+
+# time parameters
+ANALYSIS_PARAMS_TIME_NO_SBP = ["TotalApneaSleepTime", "TotalWakeTime", "TotalSleepTime", "TotalArousalSleepTime"]
+
+
+# combination of NO SBP parameters
+ANALYSIS_PARAMS_NO_SBP = ANALYSIS_PARAMS_NUM_NO_SBP + ANALYSIS_PARAMS_TIME_NO_SBP
 
 # Params list exists only in studies containing SBP
 # numeric parameters
@@ -38,7 +46,7 @@ ANALYSIS_PARAMS_TIME_SBP = ["SleepOverThreshold", "SnoreAbove40", "SnoreAbove50"
 ANALYSIS_PARAMS_SBP = ANALYSIS_PARAMS_NUM_SBP + ANALYSIS_PARAMS_TIME_SBP
 
 # combination of all the parameters lists in statistics.xml
-ANALYSIS_ALL_PARAMS = ANALYSIS_PARAMS + ANALYSIS_PARAMS_SBP
+ANALYSIS_ALL_PARAMS = ANALYSIS_PARAMS_NO_SBP + ANALYSIS_PARAMS_SBP
 
 ## XML Files name & Tags
 # statistics content declaration
@@ -138,7 +146,8 @@ def get_object_list(ROOTDIR):
                 if not file.endswith('.xml'):
                     continue
                 if file == STAT_NAME_TAGS[0]:
-                    current_xml = XML_STAT(zip_folder, STAT_NAME_TAGS[1], ANALYSIS_PARAMS_SBP, ANALYSIS_PARAMS_TIME_SBP)
+                    current_xml = XML_STAT(zip_folder, STAT_NAME_TAGS[1], ANALYSIS_PARAMS_SBP, ANALYSIS_PARAMS_TIME_SBP,
+                                           ANALYSIS_PARAMS_TIME_NO_SBP)
                 elif file == MAINREPORT_NAME_TAGS[0]:
                     current_xml = XML_REPORT(zip_folder, MAINREPORT_NAME_TAGS[1])
                 elif file == SLEEP_STAGES_NAME_TAGS[0]:
