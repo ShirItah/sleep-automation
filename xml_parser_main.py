@@ -25,7 +25,8 @@ ANALYSIS_PARAMS_NUM_NO_SBP = ["RDI", "AHI", "ODI", "REM_RDI", "REM_AHI", "REM_OD
                    "NumberOfCentralAH", "SatBelowEqual88", "SatBelow88"]
 
 # time parameters
-ANALYSIS_PARAMS_TIME_NO_SBP = ["TotalApneaSleepTime", "TotalWakeTime", "TotalSleepTime", "TotalArousalSleepTime"]
+ANALYSIS_PARAMS_TIME_NO_SBP = ["TotalApneaSleepTime", "TotalWakeTime", "TotalSleepTime", "TotalArousalSleepTime",
+                               "TotalREMTime", "TotalDeepSleepTime", "TotalLightSleepTime"]
 
 
 # combination of NO SBP parameters
