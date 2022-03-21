@@ -21,7 +21,7 @@ import csv
 # Params list exists in all the studies
 ANALYSIS_PARAMS = ["RDI", "AHI", "ODI", "REM_RDI", "REM_AHI", "REM_ODI", "NREM_RDI", "NREM_AHI", "NREM_ODI",
                    "TotalNumberOfApneas", "AHICentral", "CSR_Percent", "REM_AHICentral", "NREM_AHICentral",
-                   "NumberOfCentralAH"]
+                   "NumberOfCentralAH", "SatBelowEqual88", "SatBelowEqual88"]
 
 # Params list exists only in studies containing SBP
 # numeric parameters
