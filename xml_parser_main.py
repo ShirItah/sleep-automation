@@ -5,7 +5,7 @@
 # –d “destination folder” –a f –p
 
 ####### Imports #######
-
+import json
 from xml_stat import XML_STAT
 from xml_report import XML_REPORT
 from xml_stages import XML_STAGES
@@ -21,12 +21,14 @@ import csv
 # Params list exists in all the studies
 # numeric parameters
 ANALYSIS_PARAMS_NUM_NO_SBP = ["RDI", "AHI", "ODI", "REM_RDI", "REM_AHI", "REM_ODI", "NREM_RDI", "NREM_AHI", "NREM_ODI",
-                   "TotalNumberOfApneas", "AHICentral", "CSR_Percent", "REM_AHICentral", "NREM_AHICentral",
-                   "NumberOfCentralAH", "SatBelowEqual88", "SatBelow88"]
+                              "TotalNumberOfApneas", "AHICentral", "CSR_Percent", "REM_AHICentral", "NREM_AHICentral",
+                              "NumberOfCentralAH", "NumberOfWakes"]
+
 
 # time parameters
 ANALYSIS_PARAMS_TIME_NO_SBP = ["TotalApneaSleepTime", "TotalWakeTime", "TotalSleepTime", "TotalArousalSleepTime",
-                               "TotalREMTime", "TotalDeepSleepTime", "TotalLightSleepTime"]
+                               "TotalREMTime", "TotalDeepSleepTime", "TotalLightSleepTime", "SatBelow90",
+                               "SatBelowEqual88", "SatBelow88", "SatBelow85", "SatBelow80", "SatBelow70"]
 
 
 # combination of NO SBP parameters
@@ -56,7 +58,6 @@ STAT_NAME_TAGS = ("statistics.xml", [("patient", ["ID", "FirstName", "LastName"]
                                      ("HardwareVersion", []),
                                      ("SoftwareVersion", []),
                                      ("DeviceSN", [])])
-
 
 # main report content declaration
 MAINREPORT_NAME_TAGS = ("MainReport.xml", [".//{*}StudyDate", ".//{*}StartStudy",
@@ -88,10 +89,32 @@ SNORE_NAME_TAGS = ("SnoreBodyPositionTimeline.xml", [".//{*}SiTime", "//{*}SiVal
 # this list is only for the regular files
 XML_REG_FILE_NAMES_AND_TAGS = [HR_NAME_TAGS, PATAMP_NAME_TAGS, SAT_NAME_TAGS, SNORE_NAME_TAGS]
 
-# directory of the WPI output & unzip function outputs
+## Thresholds
+# Statistics Thresholds
+# TH for AHI: between 5-15 mild, between 15-30 moderate, larger than 30 severe
+
+STAT_TH = {'AHI_mild_s': 5, 'AHI_mild_moderate': 15, 'AHI_moderate_severe': 30}
+
+# MainReport Thresholds
+# TH for Totalstudy: 4 hr (= 14400 sec)
+# TH for TotalValidSleep: less than 4 hr moderate, less than 1.5 hr (5400 sec) severe
+# TH for SpO2: check durations of "satBelow-x" - TODO: extract from zpt files
+
+MAINREPORT_TH = {'TotalStudy': 14400, 'TotalValidSleep_moderate': 14400, 'TotalValidSleep_severe': 5400}
+
+# Stages Thresholds
+# TH for wake [%]: > 30 %
+# TH for REM [%]: < 5%
+
+STAGES_TH = {'Wake[%]': 30, 'REM[%]': 5}
+
+# Thresholds list
+ALL_TH = [STAT_TH, MAINREPORT_TH, STAGES_TH]
+
+## Directory of the WPI output & unzip function outputs
 ROOTDIR = '.\\WPI_night_studies_auto_tool\\results'
 
-# the ending of the zip file containing all the xmls
+## The ending of the zip file containing all the xmls
 STUDY_ZIP_ENDING = '\\study.zip'
 
 
@@ -148,11 +171,11 @@ def get_object_list(ROOTDIR):
                     continue
                 if file == STAT_NAME_TAGS[0]:
                     current_xml = XML_STAT(zip_folder, STAT_NAME_TAGS[1], ANALYSIS_PARAMS_SBP, ANALYSIS_PARAMS_TIME_SBP,
-                                           ANALYSIS_PARAMS_TIME_NO_SBP)
+                                           ANALYSIS_PARAMS_TIME_NO_SBP, ALL_TH[0])
                 elif file == MAINREPORT_NAME_TAGS[0]:
-                    current_xml = XML_REPORT(zip_folder, MAINREPORT_NAME_TAGS[1])
+                    current_xml = XML_REPORT(zip_folder, MAINREPORT_NAME_TAGS[1], ALL_TH[1])
                 elif file == SLEEP_STAGES_NAME_TAGS[0]:
-                    current_xml = XML_STAGES(zip_folder, SLEEP_STAGES_NAME_TAGS[1])
+                    current_xml = XML_STAGES(zip_folder, SLEEP_STAGES_NAME_TAGS[1], ALL_TH[2])
                 else:
                     continue
                 # else:
@@ -180,6 +203,7 @@ def parse_xmls(list_of_studies_xml_obj):
         dest_dict.clear()
         for xml_obj in list_of_xml_objs:
             result_dict = xml_obj.parse_xml()
+            pprint(result_dict)
             dest_dict.update(result_dict)
             copy_dest_dict = dict(dest_dict)
         studies_dicts_list.append(copy_dest_dict)
@@ -192,6 +216,8 @@ def save_csv(studies_dicts_list):
     in ths csv file: each column is a key; each row is a study; each cell contains the val of the key
     :param studies_dicts_list: list of dictionaries for all the studies
     """
+    with open('dict.json','w') as d_j:
+        json.dump(studies_dicts_list, d_j, indent=6)
     fieldnames = list(studies_dicts_list[1].keys())
     with open('studies_params.csv', 'w', encoding='UTF8', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
