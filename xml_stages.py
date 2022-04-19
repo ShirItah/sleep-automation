@@ -4,8 +4,8 @@ import xml.etree.ElementTree as ET
 
 class XML_STAGES(XML_READ):
     def __init__(self, zip_folder, xml_tags, thresholds_dct):
-        super().__init__(zip_folder, xml_tags)
-        self.thresholds_dct = thresholds_dct
+        super().__init__(zip_folder, xml_tags, thresholds_dct)
+
 
     def parse_xml(self):
         mytree = ET.parse(self.zip_folder)
