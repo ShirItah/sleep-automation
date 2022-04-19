@@ -1,2 +1,4 @@
 /.idea/**
 studies_params.csv
+/studies
+dict.json

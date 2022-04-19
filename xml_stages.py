@@ -15,11 +15,11 @@ class XML_STAGES(XML_READ):
             self.results_dict[tag[6:]] = x[0].text      # tag[6:] is for cutting the './/{*}' in the start of tag
         self.results_dict = {f'{k}[%]': v for k, v in self.results_dict.items()}            # adding units (percentage)
         for k, v in self.results_dict.items():
-            res_dict = self.check_threshold_main_report(k, v, self.thresholds_dct)
+            res_dict = self.check_threshold_stages(k, v, self.thresholds_dct)
         return res_dict
 
 
-    def check_threshold_main_report(self, k, v, th_dct):
+    def check_threshold_stages(self, k, v, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
         :param k: key (field) in statistics.xml file

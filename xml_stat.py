@@ -55,10 +55,10 @@ class XML_STAT(XML_READ):
             if not sec_param == "N/A":
                 self.results_dict[param_time] = str(datetime.timedelta(seconds=int(sec_param)))
         for k, v in self.results_dict.items():
-            res_dict = self.check_threshold_main_report(k, v, self.thresholds_dct)
+            res_dict = self.check_threshold_stat(k, v, self.thresholds_dct)
         return res_dict
 
-    def check_threshold_main_report(self, k, v, th_dct):
+    def check_threshold_stat(self, k, v, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
         :param k: key (field) in statistics.xml file

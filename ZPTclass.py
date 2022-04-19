@@ -8,7 +8,7 @@ class ZPTclass:
         self.subdir = subdir
         self.data_mat = data_mat
         self.zpt_txt = zpt_txt
-        self.zpt_mat = self.get_bin_data()
+        self.data_mat = self.get_bin_data()
 
     def get_bin_data(self):
         data_array = np.fromfile(self.zip_folder, dtype=np.int16)
@@ -25,3 +25,4 @@ class ZPTclass:
             for line in self.data_mat:
                 f.write(str(line))
                 f.write('\n')
+

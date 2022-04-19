@@ -68,25 +68,6 @@ MAINREPORT_NAME_TAGS = ("MainReport.xml", [".//{*}StudyDate", ".//{*}StartStudy"
 SLEEP_STAGES_NAME_TAGS = ('SleepStagesChart.xml', [".//{*}Wake", ".//{*}Sleep", ".//{*}REM", ".//{*}NREM",
                                                    ".//{*}Light", ".//{*}Deep"])
 
-# # Regular files: contain vector of the values Vs time
-# parsing zpt files so maybe wont need these files
-# # file1 - Heart Rate Vs Time
-# HR_NAME_TAGS = ("HeartRateTimeline.xml", [".//{*}SiTime", ".//{*}SiValue1"])
-#
-# # file2 - PAT amplitude Vs Time
-# PATAMP_NAME_TAGS = ("PatAmplitudeTimeline.xml", [".//{*}SiTime", ".//{*}SiValuePatAmpl"])
-#
-# # file3 - Saturation Vs Time
-# SAT_NAME_TAGS = ("SatPulseRate.xml", [".//{*}SiTime", ".//{*}SiValueSaO2"])
-#
-# # file 4- Snoring Vs Time - for studies with SBP
-# SNORE_NAME_TAGS = ("SnoreBodyPositionTimeline.xml", [".//{*}SiTime", "//{*}SiValueSnore"])
-#
-# # file5- Body position Vs Time
-#
-# # list of pair, XML File Names & Tags
-# # this list is only for the regular files
-# XML_REG_FILE_NAMES_AND_TAGS = [HR_NAME_TAGS, PATAMP_NAME_TAGS, SAT_NAME_TAGS, SNORE_NAME_TAGS]
 
 ## Thresholds
 # Statistics Thresholds
@@ -136,7 +117,6 @@ def main():
     studies_dicts_list = parse_xmls(list_of_studies_xml_obj)
     # pprint(studies_dicts_list)
     read_zpt(ROOTDIR, ZPT_FILES)
-    # x = ZPTclass()
     save_csv(studies_dicts_list, CSVFILE)
 
 
@@ -189,12 +169,11 @@ def get_object_list(rootdir):
                     current_xml = XML_STAGES(zip_folder, SLEEP_STAGES_NAME_TAGS[1], ALL_TH[2])
                 else:
                     continue
-                # else:
-                #     # loop to find the relevant xml in XML_REG_FILE_NAMES_AND_TAGS save index in i
-                #     for i in XML_REG_FILE_NAMES_AND_TAGS:
-                #         current_xml = XML_REG(zip_folder, XML_REG_FILE_NAMES_AND_TAGS[i][1])
+
                 list_of_xml_objs.append(current_xml)
+
                 list_of_xml_objs_copy = list_of_xml_objs.copy()
+                # current_xml.parse_xml()
             list_of_studies_xml_obj.append(list_of_xml_objs_copy)
     return list_of_studies_xml_obj
 
@@ -223,24 +202,25 @@ def parse_xmls(studies_xml_obj):
 
 def read_zpt(rootdir, zpt_files):
     data_mat = []
-    ZPT_FILES = ["Actigraph.zpt", "PAT_Infra.zpt", "PeripheralBP.zpt", "SaO2.zpt", "PatAmplitude.zpt"]
+    ZPT_FILES = ["Actigraph.zpt", "PatAmplitude.zpt",  "PAT_Infra.zpt", "PeripheralBP.zpt", "SaO2.zpt", ]
 
     for subdir, dirs, files in os.walk(rootdir):
         data_mat.clear()
         if not files == []:
-            for file in files:
-                if file in ZPT_FILES:
-                    print(file)
+            # for file in files:
+            #     if file in ZPT_FILES:
+            #         print(file)
+            #         zip_folder = os.path.join(subdir, file)
+            #         zpt_data = ZPTclass(zip_folder, subdir, data_mat, ZPT_TXT, file)
+            #         # zpt_data.write_zpt_to_txt()
+
             for zpt_file in zpt_files:
                 for file in files:
                     if file != zpt_file:
                         continue
                     zip_folder = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
                     zpt_data = ZPTclass(zip_folder, subdir, data_mat, ZPT_TXT)
-                    # if file == zpt_file:
-                    #     zpt_data = ZPTclass(zip_folder, subdir, data_mat, ZPT_TXT)
-                    # else:
-                    #     continue
+
 
 
 def save_csv(studies_list, csv_file_name):
