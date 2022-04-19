@@ -9,12 +9,13 @@ import json
 from xml_stat import XML_STAT
 from xml_report import XML_REPORT
 from xml_stages import XML_STAGES
+from ZPTclass import READ_ZPT
 from xml_reg import XML_REG
 import os
 import zipfile
 from pprint import pprint
 import csv
-
+import ZPTclass
 ####### Global variables #########
 
 ## Parameters lists in statistics.xml - "analysis" tag
@@ -24,12 +25,10 @@ ANALYSIS_PARAMS_NUM_NO_SBP = ["RDI", "AHI", "ODI", "REM_RDI", "REM_AHI", "REM_OD
                               "TotalNumberOfApneas", "AHICentral", "CSR_Percent", "REM_AHICentral", "NREM_AHICentral",
                               "NumberOfCentralAH", "NumberOfWakes"]
 
-
 # time parameters
 ANALYSIS_PARAMS_TIME_NO_SBP = ["TotalApneaSleepTime", "TotalWakeTime", "TotalSleepTime", "TotalArousalSleepTime",
                                "TotalREMTime", "TotalDeepSleepTime", "TotalLightSleepTime", "SatBelow90",
                                "SatBelowEqual88", "SatBelow88", "SatBelow85", "SatBelow80", "SatBelow70"]
-
 
 # combination of NO SBP parameters
 ANALYSIS_PARAMS_NO_SBP = ANALYSIS_PARAMS_NUM_NO_SBP + ANALYSIS_PARAMS_TIME_NO_SBP
@@ -37,8 +36,8 @@ ANALYSIS_PARAMS_NO_SBP = ANALYSIS_PARAMS_NUM_NO_SBP + ANALYSIS_PARAMS_TIME_NO_SB
 # Params list exists only in studies containing SBP
 # numeric parameters
 ANALYSIS_PARAMS_NUM_SBP = ["MeanSnoreDB", "Prone_RDI", "Prone_AHI", "Prone_ODI", "Supine_RDI", "Supine_AHI",
-                       "Supine_ODI", "Left_RDI", "Left_AHI", "Left_ODI", "Right_RDI", "Right_AHI", "Right_ODI",
-                       "NonSupine_RDI", "NonSupine_AHI", "NonSupine_ODI"]
+                           "Supine_ODI", "Left_RDI", "Left_AHI", "Left_ODI", "Right_RDI", "Right_AHI", "Right_ODI",
+                           "NonSupine_RDI", "NonSupine_AHI", "NonSupine_ODI"]
 
 # time parameters
 ANALYSIS_PARAMS_TIME_SBP = ["SleepOverThreshold", "SnoreAbove40", "SnoreAbove50", "SnoreAbove60", "SnoreAbove70",
@@ -111,11 +110,18 @@ STAGES_TH = {'Wake[%]': 30, 'REM[%]': 5}
 # Thresholds list
 ALL_TH = [STAT_TH, MAINREPORT_TH, STAGES_TH]
 
+## ZPT files list
+ZPT_FILES = ["Actigraph.zpt", "PAT_Infra.zpt", "PeripheralBP.zpt", "SaO2.zpt", "PatAmplitude.zpt"]
+
+
 ## Directory of the WPI output & unzip function outputs
-ROOTDIR = '.\\WPI_night_studies_auto_tool\\results'
+ROOTDIR = '.\\studies\\results'
 
 ## The ending of the zip file containing all the xmls
 STUDY_ZIP_ENDING = '\\study.zip'
+
+## CSV file name
+CSVFILE = 'studies_params.csv'
 
 
 def main():
@@ -125,8 +131,10 @@ def main():
     unzip_xmls(ROOTDIR)
     list_of_studies_xml_obj = get_object_list(ROOTDIR)
     studies_dicts_list = parse_xmls(list_of_studies_xml_obj)
-    #pprint(studies_dicts_list)
-    save_csv(studies_dicts_list)
+    # pprint(studies_dicts_list)
+    read_zpt(ROOTDIR, ZPT_FILES)
+    x = ZPTclass()
+    save_csv(studies_dicts_list, CSVFILE)
 
 
 def unzip_xmls(ROOTDIR):
@@ -157,9 +165,9 @@ def get_object_list(ROOTDIR):
     @param ROOTDIR: the path of all the xml files
     @returns list of lists xml objects (for all the studies, each list is for different study)
     """
-    list_of_xml_objs = list()           # list of xml objects per study
+    list_of_xml_objs = list()  # list of xml objects per study
     list_of_xml_objs_copy = list()
-    list_of_studies_xml_obj = list()    # list of lists - each list is for one study
+    list_of_studies_xml_obj = list()  # list of lists - each list is for one study
 
     # for loop to read file by file
     for subdir, dirs, files in os.walk(ROOTDIR):
@@ -203,23 +211,46 @@ def parse_xmls(list_of_studies_xml_obj):
         dest_dict.clear()
         for xml_obj in list_of_xml_objs:
             result_dict = xml_obj.parse_xml()
-            pprint(result_dict)
+            # pprint(result_dict)
             dest_dict.update(result_dict)
             copy_dest_dict = dict(dest_dict)
         studies_dicts_list.append(copy_dest_dict)
     return studies_dicts_list
 
 
-def save_csv(studies_dicts_list):
+def read_zpt(ROOTDIR, zpt_files):
+    DataMat = []
+    study_zpt_mat = []
+    for subdir, dirs, files in os.walk(ROOTDIR):
+        DataMat.clear()
+        if not files == []:
+            for zpt_file in zpt_files:
+                for file in files:
+                    zip_folder = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
+                    if not file.endswith('.zpt'):
+                        continue
+                    if file == zpt_file:
+                        zpt_data = READ_ZPT(zip_folder, subdir, DataMat)
+                        zpt_mat = zpt_data.get_bin_data()
+                        # print(zpt_mat)
+                        # study_zpt_mat.append(zpt_mat)
+                        # zpt_data.write_zpt_to_txt()
+                    else:
+                        continue
+
+
+
+def save_csv(studies_dicts_list, csv_file_name):
     """
     this function saves the results_dict in csv file
     in ths csv file: each column is a key; each row is a study; each cell contains the val of the key
+    :param csv_file_name: the name of the csv file that stores all the data
     :param studies_dicts_list: list of dictionaries for all the studies
     """
-    with open('dict.json','w') as d_j:
+    with open('dict.json', 'w') as d_j:
         json.dump(studies_dicts_list, d_j, indent=6)
     fieldnames = list(studies_dicts_list[1].keys())
-    with open('studies_params.csv', 'w', encoding='UTF8', newline='') as f:
+    with open(csv_file_name, 'w', encoding='UTF8', newline='') as f:
         writer = csv.DictWriter(f, fieldnames=fieldnames)
         writer.writeheader()
         for study_param in studies_dicts_list:
