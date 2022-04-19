@@ -10,11 +10,10 @@ NO_SBP_PARAM_EXAMPLE = 'AHICentral'
 
 class XML_STAT(XML_READ):
     def __init__(self, zip_folder, xml_tags, sbp_tags, sbp_tags_time, no_sbp_tags_time, thresholds_dct):
-        super().__init__(zip_folder, xml_tags)
+        super().__init__(zip_folder, xml_tags, thresholds_dct)
         self.sbp_tags = sbp_tags
         self.sbp_tags_time = sbp_tags_time
         self.no_sbp_tags_time = no_sbp_tags_time
-        self.thresholds_dct = thresholds_dct
 
     def parse_xml(self):
         """
@@ -46,7 +45,7 @@ class XML_STAT(XML_READ):
             # convert the values in sbp_tags_time (representing time) from sec to hr,min,sec
             sec_param_dict_sbp = dict((k, self.results_dict[k]) for k in self.sbp_tags_time)
             sec_params_sbp = list(sec_param_dict_sbp.values())
-            print(sec_param_dict_sbp)
+            # print(sec_param_dict_sbp)
             for param_time, sec_param in itertools.zip_longest(self.sbp_tags_time, sec_params_sbp):
                 self.results_dict[param_time] = str(datetime.timedelta(seconds=int(sec_param)))
         # convert the values in no_sbp_tags_time (representing time) from sec to hr,min,sec
