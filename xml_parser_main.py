@@ -231,13 +231,10 @@ def read_zpt(rootdir, zpt_files):
             for file in files:
                 if file in ZPT_FILES:
                     print(file)
-
-
             for zpt_file in zpt_files:
                 for file in files:
                     if file != zpt_file:
                         continue
-
                     zip_folder = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
                     zpt_data = ZPTclass(zip_folder, subdir, data_mat, ZPT_TXT)
                     # if file == zpt_file:
