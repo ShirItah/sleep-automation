@@ -1,14 +1,27 @@
 from xml_read import XML_READ
 import xml.etree.ElementTree as ET
-from pprint import pprint
+
+TAGS = [".//{*}StudyDate", ".//{*}StartStudy",
+        ".//{*}EndStudy", ".//{*}TotalStudy", ".//{*}TotalValidSleep",
+        ".//{*}MeanSatValue", ".//{*}MinSatValue",
+        ".//{*}MaxSatValue", ".//{*}MeanNadirDesaturations", ".//{*}SleepLatency",
+        ".//{*}REMLatency", ".//{*}NumberOfWakes"]
+
+# TH for Totalstudy: 4 hr (= 14400 sec)
+# TH for TotalValidSleep: less than 4 hr moderate, less than 1.5 hr (5400 sec) severe
+MAINREPORT_TH = {'TotalStudy': 14400, 'TotalValidSleep_moderate': 14400, 'TotalValidSleep_severe': 5400}
 
 
 class XML_REPORT(XML_READ):
-    def __init__(self, zip_folder, xml_tags, thresholds_dct):
-        super().__init__(zip_folder, xml_tags, thresholds_dct)
+    def __init__(self, files_path):
+        super().__init__(files_path, TAGS, MAINREPORT_TH)
 
     def parse_xml(self):
-        mytree = ET.parse(self.zip_folder)
+        """
+        this function parses MainReport.xml
+        :return: dict of the parameters in MainReport.xml
+        """
+        mytree = ET.parse(self.files_path)
         myroot = mytree.getroot()
         for tag in self.xml_tags:
             x = myroot.findall(tag)
