@@ -1,30 +1,39 @@
-from xml_read import XML_READ
 import numpy as np
-import os
-
-txtFileName = 'zpt_data.txt'
 
 
-class READ_ZPT:
-    def __init__(self, zip_folder, subdir, data_mat):
-        self.zip_folder = zip_folder
-        self.subdir = subdir
-        self.data_mat = data_mat
+class ZPTclass(object):
+    def __init__(self):
+        self.Actigraph = None
+        self.PatAmplitude = None
+        self.PAT_Infra = None
+        self.PeripheralBP = None
+        self.SaO2 = None
+        self.zptFile = []
 
-    def get_bin_data(self):
-        data_array = np.fromfile(self.zip_folder, dtype=np.int16)
-        # The data is presented from byte 128 till the end.
-        # Every two bytes represent a value, so we need to start from byte 128/2
+    def setZptAtribute(self, pathZpt):
+        if "Actigraph" in pathZpt:
+            self.Actigraph = self.get_bin_data(pathZpt)
+        elif "PatAmplitude" in pathZpt:
+            self.PatAmplitude = self.get_bin_data(pathZpt)
+        elif "PAT_Infra" in pathZpt:
+            self.PAT_Infra = self.get_bin_data(pathZpt)
+        elif "PeripheralBP" in pathZpt:
+            self.PeripheralBP = self.get_bin_data(pathZpt)
+        elif "SaO2" in pathZpt:
+            self.SaO2 = self.get_bin_data(pathZpt)
+        self.zptFile.append(pathZpt)
+
+    @classmethod
+    def get_bin_data(cls, path):
+        """
+        this function parses zpt files
+        the data is presented from byte 128; every two bytes represent a value, so we start from byte 128/2
+        :param path: the path of the zpt file
+        :return: array contains the values of the zpt file
+        """
+        data_array = np.fromfile(path, dtype=np.int16)
         data_array = data_array[64:]
-        self.data_mat.append(data_array)
-        self.write_zpt_to_txt()
-        return self.data_mat
+        return data_array
 
-    def write_zpt_to_txt(self):
-        study_folder = os.path.join(self.subdir, txtFileName)
-        with open(study_folder, 'w') as f:
-            # f.writelines(str(self.data_mat))
-            for line in self.data_mat:
-                f.write(str(line))
-                f.write('\n')
-
+    def zpt_to_dict(self):
+        return self.__dict__
