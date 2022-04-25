@@ -1,14 +1,23 @@
 from xml_read import XML_READ
 import xml.etree.ElementTree as ET
 
+TAGS = [".//{*}Wake", ".//{*}Sleep", ".//{*}REM",
+        ".//{*}NREM", ".//{*}Light", ".//{*}Deep"]
+
+# TH for wake [%]: > 30 %; TH for REM [%]: < 5%
+STAGES_TH = {'Wake[%]': 30, 'REM[%]': 5}
 
 class XML_STAGES(XML_READ):
-    def __init__(self, zip_folder, xml_tags, thresholds_dct):
-        super().__init__(zip_folder, xml_tags, thresholds_dct)
+    def __init__(self, files_path):
+        super().__init__(files_path, TAGS, STAGES_TH)
 
 
     def parse_xml(self):
-        mytree = ET.parse(self.zip_folder)
+        """
+        this function parses SleepStagesChart.xml and adding units (%) to the values
+        :return: dict of the parameters in SleepStagesChart.xml
+        """
+        mytree = ET.parse(self.files_path)
         myroot = mytree.getroot()
         for tag in self.xml_tags:
             x = myroot.findall(tag)
