@@ -26,7 +26,7 @@ class ZPTclass(object):
     @classmethod
     def get_bin_data(cls, path):
         """
-        this function parses zpt files
+        this function parses zpt files (convert binary data to numpy array)
         the data is presented from byte 128; every two bytes represent a value, so we start from byte 128/2
         :param path: the path of the zpt file
         :return: array contains the values of the zpt file
