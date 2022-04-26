@@ -78,7 +78,8 @@
             "SleepDuringNonSupine": "W/O SBP",
             "HardwareVersion": "4.2.1025",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "100064"
+            "DeviceSN": "100064",
+            "status": "OK"
       },
       {
             "StudyDate": "03-Dec-2021",
@@ -162,7 +163,8 @@
             "SleepDuringNonSupine": "W/O SBP",
             "HardwareVersion": "4.2.1023",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "116123"
+            "DeviceSN": "116123",
+            "status": "Not OK"
       },
       {
             "StudyDate": "17-Dec-2018",
@@ -243,7 +245,8 @@
             "SleepDuringNonSupine": "W/O SBP",
             "HardwareVersion": "4.0.1512",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "100080"
+            "DeviceSN": "100080",
+            "status": "OK"
       },
       {
             "StudyDate": "28-Jan-2022",
@@ -327,7 +330,8 @@
             "SleepDuringNonSupine": "0:38:55",
             "HardwareVersion": "4.2.1019",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "105175780"
+            "DeviceSN": "105175780",
+            "status": "Not OK"
       },
       {
             "StudyDate": "10-Jan-2022",
@@ -411,7 +415,8 @@
             "SleepDuringNonSupine": "2:18:30",
             "HardwareVersion": "4.2.1025",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "308716"
+            "DeviceSN": "308716",
+            "status": "Not OK"
       },
       {
             "StudyDate": "20-Dec-2021",
@@ -492,7 +497,8 @@
             "SleepDuringNonSupine": "3:57:30",
             "HardwareVersion": "4.2.1025",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "308716"
+            "DeviceSN": "308716",
+            "status": "OK"
       },
       {
             "StudyDate": "09-Aug-2021",
@@ -576,7 +582,8 @@
             "SleepDuringNonSupine": "2:24:30",
             "HardwareVersion": "4.1.1545",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "103826954"
+            "DeviceSN": "103826954",
+            "status": "Not OK"
       },
       {
             "StudyDate": "09-Aug-2021",
@@ -660,6 +667,7 @@
             "SleepDuringNonSupine": "4:39:27",
             "HardwareVersion": "4.1.1545",
             "SoftwareVersion": "5.2.80.4",
-            "DeviceSN": "103827291"
+            "DeviceSN": "103827291",
+            "status": "Not OK"
       }
 ]
