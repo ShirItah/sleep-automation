@@ -94,11 +94,12 @@ class XML_STAT(XML_READ):
         for param_time, sec_param in itertools.zip_longest(self.no_sbp_tags_time, sec_params_no_sbp):
             if not sec_param == "N/A":
                 self.results_dict[param_time] = str(datetime.timedelta(seconds=int(sec_param)))
+        self.results_dict['status'] = 'OK'
         for k, v in self.results_dict.items():
-            res_dict = self.check_threshold_stat(k, v, self.thresholds_dct)
+            res_dict = self.check_threshold(k, v, self.thresholds_dct)
         return res_dict
 
-    def check_threshold_stat(self, k, v, th_dct):
+    def check_threshold(self, k, v, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
         :param k: key (field) in statistics.xml file
@@ -106,15 +107,19 @@ class XML_STAT(XML_READ):
         :param th_dct: dict of thresholds to check on the specific fields
         :return: dict of the parameters in statistics.xml with notes on the thresholds
         """
+
         match k:
             case 'AHI':
                 # between 5-15 - mild
                 if th_dct['AHI_mild_s'] < float(v) < th_dct['AHI_mild_moderate']:
                     self.results_dict['AHI'] = [v, 'AHI - mild']
+                    self.results_dict['status'] = 'Not OK'
                 # between 15-30 - moderate
                 if th_dct['AHI_mild_moderate'] < float(v) < th_dct['AHI_moderate_severe']:
                     self.results_dict['AHI'] = [v, 'AHI - moderate']
+                    self.results_dict['status'] = 'Not OK'
                 # larger than 30 - severe
                 if float(v) > th_dct['AHI_moderate_severe']:
                     self.results_dict['AHI'] = [v, 'AHI - severe']
+                    self.results_dict['status'] = 'Not OK'
         return self.results_dict
