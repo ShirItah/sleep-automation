@@ -7,6 +7,7 @@ class Study(Zpt):
         self._report = None
         self._stats = None
         self._stages = None
+        self._status = None
         self.results = dict()
 
     @property
@@ -25,6 +26,7 @@ class Study(Zpt):
     @stats.setter
     def stats(self, value):
         self.results.update(value.parse_xml())
+        self._status = self.set_status()
         self._stats = value
 
     @property
@@ -35,3 +37,6 @@ class Study(Zpt):
     def stages(self, value):
         self.results.update(value.parse_xml())
         self._stages = value
+
+    def set_status(self):
+        return self.results['status']

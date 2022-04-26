@@ -22,9 +22,11 @@ def main():
     study_obj = get_object_list(ROOTDIR)
     save_csv(study_obj)
 
-    # for obj in study_obj:
-    #     print(obj.__dict__)
-    #     print(obj.Actigraph[200])
+    for obj in study_obj:
+        print(obj.__dict__)
+        # print(obj.results['status'])
+        print(obj._status)
+        # print(obj.Actigraph[200])
 
 
 def unzip_xmls(rootdir):
@@ -44,8 +46,9 @@ def unzip_xmls(rootdir):
             zip_path = os.path.dirname(zip_folder)  # target dir for xml files
 
             # unzip reportfiles.zip & unzip study.zip
-            with ZipFile(zip_folder) as zip_ref1, ZipFile(zip_path + study_zip_ending) as zip_ref2:
+            with ZipFile(zip_folder) as zip_ref1:
                 zip_ref1.extractall(zip_path)
+            with ZipFile(zip_path + study_zip_ending) as zip_ref2:
                 zip_ref2.extractall(zip_path)
 
 
@@ -63,7 +66,7 @@ def get_object_list(rootdir):
         if not files == []:
             study = Study()
             for file in files:
-                files_path = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
+                files_path = os.path.join(subdir, file)
                 if file == "statistics.xml":
                     study.stats = XML_STAT(files_path)
                 elif file == "MainReport.xml":
