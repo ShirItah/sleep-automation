@@ -5,6 +5,8 @@ CD /d C:\Program Files (x86)\Itamar Medical\WP_Interface
 SET source=%1
 SET dest=%2
 SET action=%3
+echo $source
+echo %source%
 @REM ECHO source: %source%, destination: %dest%, action: %action%
 
 ECHO "" | zzzPATAnalyzeReport -s %source% -d %dest% -a %action% -p
