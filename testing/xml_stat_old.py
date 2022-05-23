@@ -1,4 +1,4 @@
-from xml_read import XML_READ
+from Study.xml.xml_read import XML_READ
 import xml.etree.ElementTree as ET
 import datetime
 import itertools
@@ -42,7 +42,8 @@ TAGS = [("patient", ["ID", "FirstName", "LastName"]),
         ("analysis", ANALYSIS_ALL_PARAMS),
         ("HardwareVersion", []),
         ("SoftwareVersion", []),
-        ("DeviceSN", [])]
+        ("DeviceSN", []),
+        ("BraceletSN", [])]
 
 # TH for AHI: between 5-15 mild, between 15-30 moderate, larger than 30 severe
 STAT_TH = {'AHI_mild_s': 5, 'AHI_mild_moderate': 15, 'AHI_moderate_severe': 30}
@@ -95,10 +96,10 @@ class XML_STAT(XML_READ):
             if not sec_param == "N/A":
                 self.results_dict[param_time] = str(datetime.timedelta(seconds=int(sec_param)))
         for k, v in self.results_dict.items():
-            res_dict = self.check_threshold_stat(k, v, self.thresholds_dct)
-        return res_dict
+            self.check_threshold(k, v, self.thresholds_dct)
+        return self.results_dict, self.status
 
-    def check_threshold_stat(self, k, v, th_dct):
+    def check_threshold(self, k, v, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
         :param k: key (field) in statistics.xml file
@@ -111,10 +112,14 @@ class XML_STAT(XML_READ):
                 # between 5-15 - mild
                 if th_dct['AHI_mild_s'] < float(v) < th_dct['AHI_mild_moderate']:
                     self.results_dict['AHI'] = [v, 'AHI - mild']
+                    self.status = False
                 # between 15-30 - moderate
                 if th_dct['AHI_mild_moderate'] < float(v) < th_dct['AHI_moderate_severe']:
                     self.results_dict['AHI'] = [v, 'AHI - moderate']
+                    self.status = False
                 # larger than 30 - severe
                 if float(v) > th_dct['AHI_moderate_severe']:
                     self.results_dict['AHI'] = [v, 'AHI - severe']
-        return self.results_dict
+                    self.status = False
+
+
