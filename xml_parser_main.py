@@ -1,12 +1,14 @@
 # Imports
-import json
-from xml_stat import XML_STAT
-from xml_report import XML_REPORT
-from xml_stages import XML_STAGES
-import os
+
+from Study.Study import Study
+from Study.xml.xml_stat import XML_STAT
+from Study.xml.xml_report import XML_REPORT
+from Study.xml.xml_stages import XML_STAGES
 from zipfile import ZipFile
+from Utilities.call_bat import WPI
+import os
+import json
 import csv
-from Study import Study
 from pprint import pprint
 
 # Global variables
@@ -18,13 +20,15 @@ def main():
     """
     Main function
     """
-    unzip_xmls(ROOTDIR)
-    study_obj = get_object_list(ROOTDIR)
-    save_csv(study_obj)
+    studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\source"
+    dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\results1"
+    WPI.analyze_report_caller(studies,dest)
+    unzip_xmls(dest)
+    study_obj = get_object_list(dest)
+    # save_csv(study_obj)
 
-    # for obj in study_obj:
-    #     print(obj.__dict__)
-    #     print(obj.Actigraph[200])
+    for obj in study_obj:
+        pprint(obj.__dict__)
 
 
 def unzip_xmls(rootdir):
@@ -44,8 +48,9 @@ def unzip_xmls(rootdir):
             zip_path = os.path.dirname(zip_folder)  # target dir for xml files
 
             # unzip reportfiles.zip & unzip study.zip
-            with ZipFile(zip_folder) as zip_ref1, ZipFile(zip_path + study_zip_ending) as zip_ref2:
+            with ZipFile(zip_folder) as zip_ref1:
                 zip_ref1.extractall(zip_path)
+            with ZipFile(zip_path + study_zip_ending) as zip_ref2:
                 zip_ref2.extractall(zip_path)
 
 
@@ -54,10 +59,11 @@ def get_object_list(rootdir):
     this function creates list of xml objects
     according to their type it calls the specific class and creates the object
     @param rootdir: the path of all the xml files
-    @returns list of lists xml objects (for all the studies, each list is for different study)
+    @returns list of lists xml objects (all studies)
     """
     study_list = list()
-    zpt_files = ["Actigraph.zpt", "PatAmplitude.zpt", "PAT_Infra.zpt", "PeripheralBP.zpt", "SaO2.zpt"]
+    zpt_files = ["Actigraph.zpt",  "PatAmplitude.zpt", "PAT_Infra.zpt", "PeripheralBP.zpt", "HeartRate.zpt", "SaO2.zpt",
+                 "SBP_AC.zpt", "SnoreWP.zpt"]
     # for loop to read file by file
     for subdir, dirs, files in os.walk(rootdir):
         if not files == []:
@@ -71,7 +77,7 @@ def get_object_list(rootdir):
                 elif file == "SleepStagesChart.xml":
                     study.stages = XML_STAGES(files_path)
                 elif file in zpt_files:
-                    study.setZptAtribute(files_path)
+                    study.setZptAtribute(files_path, file)
                 else:
                     continue
             study_list.append(study)
@@ -84,7 +90,7 @@ def save_csv(obj_list):
     in ths csv file: each column is a key; each row is a study; each cell contains the val of the key
     :param obj_list: list of all objects (classes stat, report, stages)
     """
-    csv_file_name = 'studies_params.csv'
+    csv_file_name = 'Resources/studies_params.csv'
     all_studies = list()
 
     for obj in obj_list:

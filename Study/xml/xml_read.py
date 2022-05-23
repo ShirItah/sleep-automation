@@ -4,3 +4,4 @@ class XML_READ:
         self.xml_tags = xml_tags
         self.thresholds_dct = thresholds_dct
         self.results_dict = dict()
+        self.status = True

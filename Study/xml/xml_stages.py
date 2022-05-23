@@ -1,8 +1,7 @@
-from xml_read import XML_READ
+from Study.xml.xml_read import XML_READ
 import xml.etree.ElementTree as ET
 
-TAGS = [".//{*}Wake", ".//{*}Sleep", ".//{*}REM",
-        ".//{*}NREM", ".//{*}Light", ".//{*}Deep"]
+TAGS = ['.//{*}Wake', './/{*}Sleep', './/{*}REM', './/{*}NREM', './/{*}Light', './/{*}Deep']
 
 # TH for wake [%]: > 30 %; TH for REM [%]: < 5%
 STAGES_TH = {'Wake[%]': 30, 'REM[%]': 5}
@@ -15,7 +14,7 @@ class XML_STAGES(XML_READ):
     def parse_xml(self):
         """
         this function parses SleepStagesChart.xml and adding units (%) to the values
-        :return: dict of the parameters in SleepStagesChart.xml
+        :return: dict of the parameters in SleepStagesChart.xml and the study status
         """
         mytree = ET.parse(self.files_path)
         myroot = mytree.getroot()
@@ -24,11 +23,11 @@ class XML_STAGES(XML_READ):
             self.results_dict[tag[6:]] = x[0].text      # tag[6:] is for cutting the './/{*}' in the start of tag
         self.results_dict = {f'{k}[%]': v for k, v in self.results_dict.items()}            # adding units (percentage)
         for k, v in self.results_dict.items():
-            res_dict = self.check_threshold_stages(k, v, self.thresholds_dct)
-        return res_dict
+            self.check_threshold(k, v, self.thresholds_dct)
+        return self.results_dict, self.status
 
 
-    def check_threshold_stages(self, k, v, th_dct):
+    def check_threshold(self, k, v, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
         :param k: key (field) in statistics.xml file
@@ -41,8 +40,9 @@ class XML_STAGES(XML_READ):
                 # more than 30%
                 if float(v) > th_dct['Wake[%]']:
                     self.results_dict['Wake[%]'] = [v, 'Wake[%] Problem']
+                    self.status = False
             case 'REM[%]':
                 # less than 5%
                 if float(v) < th_dct['REM[%]']:
                     self.results_dict['REM[%]'] = [v, 'REM[%] Problem']
-        return self.results_dict
+                    self.status = False
