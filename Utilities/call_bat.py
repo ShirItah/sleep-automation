@@ -11,8 +11,6 @@ class WPI:
 
     @staticmethod
     def call_bat(study, dest):
-        # study = os.path.abspath(study)
-        # dest = os.path.abspath(dest)
         print("call_bat")
         action = "f"
         print(study, dest)
@@ -26,11 +24,6 @@ class WPI:
                 stamp = datetime.datetime.now().strftime('%Y%m%d_%H%M%S%f')  # timestamp for successful folder name
                 os.rename(study, study + '_Done_' + stamp)  # rename source folder to show it was parsed successfully
                 os.rename(dest, dest + '_Done_' + stamp)  # rename dest folder to show it was parsed successfully
-            # return dest+'_Done_'+stamp
-            # return dest
-
-        # Check all files created - always the same files?
-        # Return path to result folder
 
     @classmethod
     def analyze_report_caller(cls, studies, dest):
@@ -46,9 +39,9 @@ class WPI:
             currFolder = os.path.join(studies, folder)  # Concat studies with current subfolder
             files = os.listdir(currFolder)  # files in current subfolder
 
+            # check if sleep.dat and patient.date exist. Used upper to be case-insensitive
             if "Patient.dat".upper() in (file.upper() for file in files) and \
-                    "Sleep.dat".upper() in (file.upper() for file in
-                                            files):  # check if sleep.dat and patient.date exist. Used upper to be case-insensitive
+                    "Sleep.dat".upper() in (file.upper() for file in files):
                 WPI.call_bat(currFolder, os.path.join(newPath, folder))
             else:
                 print("Patient.dat and\\or Sleep.dat are missing in", folder)

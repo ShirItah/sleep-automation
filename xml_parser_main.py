@@ -13,7 +13,7 @@ from pprint import pprint
 
 # Global variables
 # Directory of the WPI output & unzip function outputs
-ROOTDIR = '.\\studies\\results'
+# ROOTDIR = '.\\studies\\results'
 
 
 def main():
@@ -22,13 +22,14 @@ def main():
     """
     studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\source"
     dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\results1"
-    WPI.analyze_report_caller(studies,dest)
+    WPI.analyze_report_caller(studies, dest)
     unzip_xmls(dest)
     study_obj = get_object_list(dest)
     # save_csv(study_obj)
+    # for i in study_obj:
+    #     print(i)
+        # print(i.report)
 
-    for obj in study_obj:
-        pprint(obj.__dict__)
 
 
 def unzip_xmls(rootdir):
@@ -71,7 +72,9 @@ def get_object_list(rootdir):
             for file in files:
                 files_path = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
                 if file == "statistics.xml":
-                    study.stats = XML_STAT(files_path)
+                    x = XML_STAT(files_path)
+                    study.stats = x
+                    # print(study.stats)
                 elif file == "MainReport.xml":
                     study.report = XML_REPORT(files_path)
                 elif file == "SleepStagesChart.xml":
@@ -80,7 +83,11 @@ def get_object_list(rootdir):
                     study.setZptAtribute(files_path, file)
                 else:
                     continue
+                # pprint(study.__dict__)
+            print("this is stats in main",study.stats)
             study_list.append(study)
+    for i in study_list:
+        pprint(i.stats)
     return study_list
 
 

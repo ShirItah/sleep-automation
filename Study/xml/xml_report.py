@@ -2,8 +2,7 @@ from Study.xml.xml_read import XML_READ
 import xml.etree.ElementTree as ET
 
 TAGS = ['.//{*}StudyDate', './/{*}StartStudy', './/{*}EndStudy', './/{*}TotalStudy', './/{*}TotalValidSleep',
-        './/{*}MeanSatValue', './/{*}MinSatValue', './/{*}MaxSatValue', './/{*}MeanNadirDesaturations',
-        './/{*}SleepLatency', './/{*}REMLatency', './/{*}NumberOfWakes']
+        './/{*}SleepLatency', './/{*}REMLatency']
 
 # TH for Totalstudy: 4 hr (= 14400 sec)
 # TH for TotalValidSleep: less than 4 hr moderate, less than 1.5 hr (5400 sec) severe
@@ -20,6 +19,7 @@ class XML_REPORT(XML_READ):
         :return: dict of the parameters in MainReport.xml and the study status
         """
         mytree = ET.parse(self.files_path)
+        # print(self.files_path)
         myroot = mytree.getroot()
         for tag in self.xml_tags:
             x = myroot.findall(tag)
@@ -44,6 +44,7 @@ class XML_REPORT(XML_READ):
                 if total_study_sec < th_dct['TotalStudy']:
                     self.results_dict['TotalStudy'] = [v, 'TotalStudy Problem']
                     self.status = False
+
             case 'TotalValidSleep':
                 valid_sleep_num_list = [int(s) for s in v.split() if s.isdigit()]  # extracts time from str
                 valid_sleep_sec = valid_sleep_num_list[0] * 3600 + valid_sleep_num_list[1] * 60  # convert to sec
@@ -54,4 +55,5 @@ class XML_REPORT(XML_READ):
                 if valid_sleep_sec < th_dct['TotalValidSleep_severe']:
                     self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep TotalValidSleep severe']
                     self.status = False
+
         return self.results_dict
