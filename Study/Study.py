@@ -1,13 +1,6 @@
 from Study.zpt.ZPTclass import ZPTclass as Zpt
 
 
-# class Patient:
-#     def __init__(self):
-#         self.fname = None
-#         self.lname = None
-#         self.ID = None
-
-
 class Study(Zpt):
     def __init__(self):
         super(Study, self).__init__()
@@ -32,14 +25,8 @@ class Study(Zpt):
 
     @stats.setter
     def stats(self, value):
-        # print("*" * 25)
-        # print(value.parse_xml())
-        # print("*"*25)
-        print(value)
         self._stats, status = value.parse_xml()
-        print("this is the current stats: ",self._stats)
         self.set_status(status)
-
 
     @property
     def stages(self):
@@ -50,16 +37,10 @@ class Study(Zpt):
         self._stages, status = value.parse_xml()
         self.set_status(status)
 
-
     def setZptAtribute1(self, pathZpt, name):
         self.setZptAtribute(pathZpt, name)
 
-
-
-
-    # def get_data(self):
-    #     return self.fname, self.lname, self.ID
-
     def set_status(self, status):
-        if status or self.status_zpt is False:
+        if status is False or self.status_zpt is False:
             self.study_Status = "NOT OK"
+

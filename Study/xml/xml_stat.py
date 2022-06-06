@@ -54,7 +54,7 @@ class XML_STAT(XML_READ):
         super().__init__(files_path, [], STAT_TH)
         self.time_params = TIME_PARAMS
         self.notRelevantInfo = NOT_RELEVANT
-        self.dictRoot =None
+        self.dictRoot = None
 
     def parse_xml(self):
         """
@@ -67,9 +67,8 @@ class XML_STAT(XML_READ):
         myroot = mytree.getroot()
         self.dictRoot = self.xml_to_dict(myroot, {})
         self.results_dict = {myroot.tag: self.dictRoot}
-        # self.results_dict = self.time_delta()
+        self.results_dict = self.time_delta()
         self.check_threshold(self.thresholds_dct)
-        print(self.results_dict)
         return self.results_dict, self.status
 
     def xml_to_dict(self, xml, result):
@@ -111,7 +110,6 @@ class XML_STAT(XML_READ):
     def time_delta(self):
         """
         this function convert the values representing time from sec to hr,min,sec
-        :return: dict of the parameters in Statistics.xml
         """
         for val in self.results_dict.values():
             for k, v in val.items():
@@ -131,20 +129,19 @@ class XML_STAT(XML_READ):
                             if Time_key in self.time_params['Time']:
                                 if v[Time_key] and v[Time_key] != 'N/A':
                                     v[Time_key] = str(datetime.timedelta(seconds=int(v[Time_key])))
-        # return self.results_dict
+        return self.results_dict
 
     def check_threshold(self, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
-        :param k: key (field) in statistics.xml file
-        :param v: the appropriate value in statistics.xml file
         :param th_dct: dict of thresholds to check on the specific fields
-        :return: dict of the parameters in statistics.xml with notes on the thresholds
         """
         for val in self.results_dict.values():
             for k, v in val.items():
                 match k:
                     case "Parameters":
+                        if v == {}:
+                            self.status = False
                         for Param_key, Param_val in v.items():
                             match Param_key:
                                 case 'AHI':

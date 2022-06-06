@@ -19,7 +19,6 @@ class XML_REPORT(XML_READ):
         :return: dict of the parameters in MainReport.xml and the study status
         """
         mytree = ET.parse(self.files_path)
-        # print(self.files_path)
         myroot = mytree.getroot()
         for tag in self.xml_tags:
             x = myroot.findall(tag)
@@ -56,4 +55,4 @@ class XML_REPORT(XML_READ):
                     self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep TotalValidSleep severe']
                     self.status = False
 
-        return self.results_dict
+        # return self.results_dict

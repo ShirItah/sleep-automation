@@ -48,7 +48,7 @@ class WPI:
             count += 1
 
 
-if __name__ == '__main__':
-    studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\source"
-    dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\results1"
-    WPI.analyze_report_caller(studies, dest)
+# if __name__ == '__main__':
+#     studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\source"
+#     dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\results1"
+#     WPI.analyze_report_caller(studies, dest)

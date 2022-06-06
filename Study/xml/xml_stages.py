@@ -10,7 +10,6 @@ class XML_STAGES(XML_READ):
     def __init__(self, files_path):
         super().__init__(files_path, TAGS, STAGES_TH)
 
-
     def parse_xml(self):
         """
         this function parses SleepStagesChart.xml and adding units (%) to the values
@@ -25,7 +24,6 @@ class XML_STAGES(XML_READ):
         for k, v in self.results_dict.items():
             self.check_threshold(k, v, self.thresholds_dct)
         return self.results_dict, self.status
-
 
     def check_threshold(self, k, v, th_dct):
         """

@@ -11,24 +11,25 @@ import json
 import csv
 from pprint import pprint
 
-# Global variables
-# Directory of the WPI output & unzip function outputs
-# ROOTDIR = '.\\studies\\results'
-
 
 def main():
     """
     Main function
     """
-    studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\source"
-    dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\results1"
+    # studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test_old\\source"
+    # dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test_old\\results"
+
+    studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test2\\source"
+    dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test2\\dest"
+
     WPI.analyze_report_caller(studies, dest)
+    # dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test\\dest"
     unzip_xmls(dest)
-    study_obj = get_object_list(dest)
+    for subdir, dirs, files in os.walk(dest):
+        if not files == []:
+            study_obj = get_object_list(subdir, files)
+            pprint(study_obj.__dict__)
     # save_csv(study_obj)
-    # for i in study_obj:
-    #     print(i)
-        # print(i.report)
 
 
 
@@ -55,40 +56,30 @@ def unzip_xmls(rootdir):
                 zip_ref2.extractall(zip_path)
 
 
-def get_object_list(rootdir):
+def get_object_list(subdir,files):
     """
     this function creates list of xml objects
     according to their type it calls the specific class and creates the object
     @param rootdir: the path of all the xml files
     @returns list of lists xml objects (all studies)
     """
-    study_list = list()
     zpt_files = ["Actigraph.zpt",  "PatAmplitude.zpt", "PAT_Infra.zpt", "PeripheralBP.zpt", "HeartRate.zpt", "SaO2.zpt",
                  "SBP_AC.zpt", "SnoreWP.zpt"]
-    # for loop to read file by file
-    for subdir, dirs, files in os.walk(rootdir):
-        if not files == []:
-            study = Study()
-            for file in files:
-                files_path = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
-                if file == "statistics.xml":
-                    x = XML_STAT(files_path)
-                    study.stats = x
-                    # print(study.stats)
-                elif file == "MainReport.xml":
-                    study.report = XML_REPORT(files_path)
-                elif file == "SleepStagesChart.xml":
-                    study.stages = XML_STAGES(files_path)
-                elif file in zpt_files:
-                    study.setZptAtribute(files_path, file)
-                else:
-                    continue
-                # pprint(study.__dict__)
-            print("this is stats in main",study.stats)
-            study_list.append(study)
-    for i in study_list:
-        pprint(i.stats)
-    return study_list
+
+    study = Study()
+    for file in files:
+        files_path = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
+        if file == "statistics.xml":
+            study.stats = XML_STAT(files_path)
+        elif file == "MainReport.xml":
+            study.report = XML_REPORT(files_path)
+        elif file == "SleepStagesChart.xml":
+            study.stages = XML_STAGES(files_path)
+        elif file in zpt_files:
+            study.setZptAtribute1(files_path, file)
+        else:
+            continue
+    return study
 
 
 def save_csv(obj_list):
