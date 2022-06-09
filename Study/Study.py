@@ -37,8 +37,8 @@ class Study(Zpt):
         self._stages, status = value.parse_xml()
         self.set_status(status)
 
-    def setZptAtribute1(self, pathZpt, name):
-        self.setZptAtribute(pathZpt, name)
+    def setZptAttribute(self, pathZpt, name):
+        self.set_attribute(pathZpt, name)
 
     def set_status(self, status):
         if status is False or self.status_zpt is False:

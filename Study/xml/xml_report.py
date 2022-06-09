@@ -30,10 +30,9 @@ class XML_REPORT(XML_READ):
     def check_threshold(self, k, v, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
-        :param k: key (field) in statistics.xml file
+        :param k: key (field) in MainReport.xml file
         :param v: the appropriate value in statistics.xml file
         :param th_dct: dict of thresholds to check on the specific fields
-        :return: dict of the parameters in statistics.xml with notes on the thresholds
         """
         match k:
             case 'TotalStudy':
@@ -55,4 +54,3 @@ class XML_REPORT(XML_READ):
                     self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep TotalValidSleep severe']
                     self.status = False
 
-        # return self.results_dict

@@ -1,5 +1,4 @@
 # Imports
-
 from Study.Study import Study
 from Study.xml.xml_stat import XML_STAT
 from Study.xml.xml_report import XML_REPORT
@@ -15,22 +14,20 @@ from pprint import pprint
 def main():
     """
     Main function
+    calls the function that running WPI Analyze&Report, unzip the files and extracting the data
     """
-    # studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test_old\\source"
-    # dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test_old\\results"
-
-    studies = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test2\\source"
-    dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test2\\dest"
+    studies = ".\\studies\\test2\\source"
+    dest = ".\\studies\\test2\\dest"
 
     WPI.analyze_report_caller(studies, dest)
-    # dest = "C:\\Users\\ishir\\PycharmProjects\\sleep-automation\\studies\\test\\dest"
     unzip_xmls(dest)
+
     for subdir, dirs, files in os.walk(dest):
         if not files == []:
             study_obj = get_object_list(subdir, files)
             pprint(study_obj.__dict__)
-    # save_csv(study_obj)
 
+    # save_csv(study_obj)
 
 
 def unzip_xmls(rootdir):
@@ -56,19 +53,20 @@ def unzip_xmls(rootdir):
                 zip_ref2.extractall(zip_path)
 
 
-def get_object_list(subdir,files):
+def get_object_list(subdir, files):
     """
-    this function creates list of xml objects
+    this function creates xml objects
     according to their type it calls the specific class and creates the object
-    @param rootdir: the path of all the xml files
-    @returns list of lists xml objects (all studies)
+    :param subdir: the path of each result folder
+    :param files: the files in each folder that need to be parsed
+    @returns xml object
     """
     zpt_files = ["Actigraph.zpt",  "PatAmplitude.zpt", "PAT_Infra.zpt", "PeripheralBP.zpt", "HeartRate.zpt", "SaO2.zpt",
                  "SBP_AC.zpt", "SnoreWP.zpt"]
 
     study = Study()
     for file in files:
-        files_path = os.path.join(subdir, file)  # path of the files extracted by WPI+FileName
+        files_path = os.path.join(subdir, file)
         if file == "statistics.xml":
             study.stats = XML_STAT(files_path)
         elif file == "MainReport.xml":
@@ -76,7 +74,7 @@ def get_object_list(subdir,files):
         elif file == "SleepStagesChart.xml":
             study.stages = XML_STAGES(files_path)
         elif file in zpt_files:
-            study.setZptAtribute1(files_path, file)
+            study.setZptAttribute(files_path, file)
         else:
             continue
     return study

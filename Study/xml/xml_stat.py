@@ -1,8 +1,6 @@
 from Study.xml.xml_read import XML_READ
 import xml.etree.ElementTree as ET
 import datetime
-import itertools
-from pprint import pprint
 
 # Global variables
 Parent = []
@@ -62,7 +60,6 @@ class XML_STAT(XML_READ):
         it calls xml_to_dict() that parser the xml recursively
         :return: dict of the parameters in Statistics.xml and the study status
         """
-
         mytree = ET.parse(self.files_path)
         myroot = mytree.getroot()
         self.dictRoot = self.xml_to_dict(myroot, {})
@@ -134,7 +131,7 @@ class XML_STAT(XML_READ):
     def check_threshold(self, th_dct):
         """
         this function checks for each key in the following cases if they are above/below a threshold
-        :param th_dct: dict of thresholds to check on the specific fields
+        :param th_dct: dict of thresholds for AHI to check on the specific fields
         """
         for val in self.results_dict.values():
             for k, v in val.items():
@@ -157,5 +154,29 @@ class XML_STAT(XML_READ):
                                     if float(Param_val) > th_dct['AHI_moderate_severe']:
                                         v["AHI"] = [Param_val, 'AHI - severe']
                                         self.status = False
+
+                    # check if respiratory indices exist
+                    case "Sat":
+                        for Sat_key, Sat_val in v.items():
+                            match Sat_key:
+                                case 'MaxSatValue':
+                                    if Sat_val == '0' or Sat_val == 'N/A':
+                                        v["MaxSatValue"] = [Sat_val, 'No respiratory indices']
+                                        self.status = False
+                                case 'MeanSatValue':
+                                    if Sat_val == '0' or Sat_val == 'N/A':
+                                        v["MeanSatValue"] = [Sat_val, 'No respiratory indices']
+                                        self.status = False
+                                case 'MinSatValue':
+                                    if Sat_val == '0' or Sat_val == 'N/A':
+                                        v["MinSatValue"] = [Sat_val, 'No respiratory indices']
+                                        self.status = False
+
+
+
+
+
+
+
 
 

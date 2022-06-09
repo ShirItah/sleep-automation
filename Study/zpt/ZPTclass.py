@@ -15,7 +15,7 @@ class ZPTclass(object):
         self.FlatSignals = []
         self.status_zpt = True
 
-    def setZptAtribute(self, pathZpt, name):
+    def set_attribute(self, pathZpt, name):
         if "Actigraph" in pathZpt:
             self.Actigraph = self.get_bin_data(pathZpt)
             self.check_threshold(self.Actigraph, name)
@@ -77,6 +77,11 @@ class ZPTclass(object):
         return sample_gain, sample_rate
 
     def check_threshold(self, data_array, name):
+        """
+        this function checks if the signals are flat
+        :param data_array: array contains the values of the zpt file
+        :param name: name of the signal
+        """
         flat = np.all(data_array == data_array[0])
         if flat:
             self.FlatSignals.append(name + "signal is flat")
