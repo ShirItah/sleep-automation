@@ -142,6 +142,11 @@ class XML_STAT(XML_READ):
                         for Param_key, Param_val in v.items():
                             match Param_key:
                                 case 'AHI':
+                                    # check if sleep indices exist
+                                    if Param_val == 'N/A':
+                                        v["AHI"] = [Param_val, 'No sleep indices']
+                                        self.status = False
+                                        break
                                     # between 5-15 - mild
                                     if th_dct['AHI_mild_s'] < float(Param_val) < th_dct['AHI_mild_moderate']:
                                         v["AHI"] = [Param_val, 'AHI - mild']
@@ -153,6 +158,14 @@ class XML_STAT(XML_READ):
                                     # larger than 30 - severe
                                     if float(Param_val) > th_dct['AHI_moderate_severe']:
                                         v["AHI"] = [Param_val, 'AHI - severe']
+                                        self.status = False
+                                case 'RDI':
+                                    if Param_val == 'N/A':
+                                        v["RDI"] = [Param_val, 'No sleep indices']
+                                        self.status = False
+                                case 'ODI':
+                                    if Param_val == 'N/A':
+                                        v["ODI"] = [Param_val, 'No sleep indices']
                                         self.status = False
 
                     # check if respiratory indices exist

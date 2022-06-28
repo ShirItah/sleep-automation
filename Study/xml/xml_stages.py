@@ -35,12 +35,16 @@ class XML_STAGES(XML_READ):
         """
         match k:
             case 'Wake[%]':
+                if v == 'N/A':
+                    self.status = False
                 # more than 30%
                 if float(v) > th_dct['Wake[%]']:
                     self.results_dict['Wake[%]'] = [v, 'Wake[%] Problem']
                     self.status = False
 
             case 'REM[%]':
+                if v == 'N/A':
+                    self.status = False
                 # less than 5%
                 if float(v) < th_dct['REM[%]']:
                     self.results_dict['REM[%]'] = [v, 'REM[%] Problem']

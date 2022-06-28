@@ -22,7 +22,8 @@ class XML_REPORT(XML_READ):
         myroot = mytree.getroot()
         for tag in self.xml_tags:
             x = myroot.findall(tag)
-            self.results_dict[tag[6:]] = x[0].text  # tag[6:] is for cutting the './/{*}' in the start of tag
+            if not x == []:
+                self.results_dict[tag[6:]] = x[0].text  # tag[6:] is for cutting the './/{*}' in the start of tag
         for k, v in self.results_dict.items():
             self.check_threshold(k, v, self.thresholds_dct)
         return self.results_dict, self.status
@@ -48,9 +49,9 @@ class XML_REPORT(XML_READ):
                 valid_sleep_sec = valid_sleep_num_list[0] * 3600 + valid_sleep_num_list[1] * 60  # convert to sec
                 # less than 4 hr moderate, less than 1.5 hr severe
                 if th_dct['TotalValidSleep_severe'] < valid_sleep_sec < th_dct['TotalValidSleep_moderate']:
-                    self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep TotalValidSleep moderate']
+                    self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep moderate']
                     self.status = False
                 if valid_sleep_sec < th_dct['TotalValidSleep_severe']:
-                    self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep TotalValidSleep severe']
+                    self.results_dict['TotalValidSleep'] = [v, 'TotalValidSleep severe']
                     self.status = False
 
